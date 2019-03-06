@@ -11,3 +11,5 @@ DAU level data from DWR came in a format wherein the csv file name contained inf
 "python_compiling_script_V0" and other variations of python_compiling_script are the Python scripts used to compile data by each year. "python_compiling_script_V0" contains detailed annotations of the procedures taken to retrieve necessary data from the provided csv files.
 
 Once compiled to their respective Excel workbooks, each water year of data was organized via the use of pviot tables. These tables were used to compile the data into CVPM level data by averaging AW and summing landuse data for each crop group utilizing the "DAU Reference" workbook in this repository as a guideline.
+
+Final values at the CVPM level are given in the file "CAAPM_District_AW_ICA_02202019_valsonly.xlsx" in this repository.
