@@ -2,10 +2,13 @@
 
 #Need to extract the information of WY and location and crop from file name and extract land use (sinlge value) as well as AW (sum of many values). Necessary to loop many many many times, as there are thousands of files for each WY. Need to #loop through files located in a folder, then repeat process for WY 2011-2015.
 #Objects of interest: DAU_co, crop_co, WY, landuse, AW. NOTE: the files of interest are .csv rather than .xls and therefore cannot be read as a normal Excel file.
+
 #DAU_co, crop_co and WY can be extracted from the file name; landuse and AW are extracted from the file itself.
 
 
-#NOTE: Error occurring on iteration ~700 with filename DAUCo18634C012DCIMIS2011.mtv.csv, caused by an inability to decode a character.
+#NOTE: Error occurring on iteration ~700 with filename DS.store, caused because this file is not expected and generated randomly within the folder.
+
+#Necessary modules are imported.
 
 import os, numpy, csv, xlwt, platform
 #print(os.getcwd())
@@ -13,24 +16,52 @@ import os, numpy, csv, xlwt, platform
 # for folder in os.listdir():
 # 	print(folder)
 print(platform.python_version())
+
+#A new workbook in Excel is generated to write scraped values to.
+
 workbook = xlwt.Workbook()
 worksheet = workbook.add_sheet('DAU_compiled')
 #worksheet.write(r,c,'label', style)
+
+#Column labeling is set up with the desired quantities of DAU code, crop code, landuse and AW in feet.
+
 worksheet.write(0,0,'DAU_Co')
 worksheet.write(0,1,'crop_Co')
 worksheet.write(0,2,'landuse')
 worksheet.write(0,3,'AW_ft')
+
+#Row number is initialized to zero for the purpose of looping.
+
 row = 0
+
+#A list called error_files is created to keep track of potential files in the folder of interest which may cause errors as values are extracted. Reasons for errors could be improper encoding of characters or unexpected files.
+
 error_files = []
+
+#The folder for the year being analyzed (in this example, 2011) is selected via the directory.
+
 for filename in os.listdir('/Users/SpencerCole/Documents/Hydroeconomics Research Resources/INFEWS-UNC/DAU Land and AW 2011-2015/DAUCoETcETawAW_DCIMIS2011.mtv'):
+	
+#Files within the selected folder that are not supposed to be included in the compilation are named to be skipped when the script is ran.
+
 	if filename == '2011_python_compiling_script_V1' or filename == '2011_python_compiling_script_V2' or filename == '2011_DAU_compiled.xls' or filename == '2011_DAU_compiled_V2.xls' \
 	or filename == 'test.py':
 		continue
+	
+#Filename for an iteration is listed to assist with troubleshooting potential errors or other problems encountered.
+
 	print(filename)
 	row += 1
+	
+#From the name of each file, extract the DAU/county code, water year and crop code by stripping from the filename.
+
 	DAU_Co = filename[5:10]
 	crop_Co = filename[11:14]
 	WY = filename[20:24]
+	
+#Although unconventional, an error exception was necessary to skip over problem files (i.e. DS.store) that were encountered. If a file that is incompatible with the script is encountered, the filename is appended to the 
+#error_files list created previously.
+
 	try:
 		with open(filename, 'r', encoding = 'US-ASCII') as csvfile:
 			csvreader = csv.reader(csvfile, delimiter = ',')
@@ -45,7 +76,13 @@ for filename in os.listdir('/Users/SpencerCole/Documents/Hydroeconomics Research
 	except UnicodeDecodeError:
 		print(filename + ' encountered a decode error due to a non-ascii character.')
 		error_files.append(filename)
+	
+#Save the new Excel workbook created.
+
 	workbook.save('2011_DAU_compiled_V2.xls')
+
+#List "problem" files to ensure no legitimate files were skipped.
+
 print('Number of un-read files: ' + str(len(error_files)))
 print(error_files)
 	# if filename == 'DAUCo15658C020DCIMIS2011.mtv.csv':
