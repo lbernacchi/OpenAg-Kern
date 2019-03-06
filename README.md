@@ -6,4 +6,4 @@ Data from the Department of Water Resources for monthly time steps of applied wa
 
 The files in this repository document the processes to consolidate and sort this data as well as the resultant values of interest for this project.
 
-python_compiling_script
+"python_compiling_script_V0" and other variations of python_compiling_script are the Python scripts used to compile data by each year.
