@@ -1,0 +1,63 @@
+#WY 2011-2015 DAU land and AW compiling (V3)
+
+#Need to extract the information of WY and location and crop from file name and extract land use (sinlge value) as well as AW (sum of many values). Necessary to loop many many many times, as there are thousands of files for each WY. Need to #loop through files located in a folder, then repeat process for WY 2011-2015.
+#Objects of interest: DAU_co, crop_co, WY, landuse, AW. NOTE: the files of interest are .csv rather than .xls and therefore cannot be read as a normal Excel file.
+#DAU_co, crop_co and WY can be extracted from the file name; landuse and AW are extracted from the file itself.
+
+
+#NOTE: Error occurring on iteration ~700 with filename DAUCo18634C012DCIMIS2011.mtv.csv, caused by an inability to decode a character.
+
+import os, numpy, csv, xlwt, platform
+#print(os.getcwd())
+#print(os.listdir())
+# for folder in os.listdir():
+# 	print(folder)
+print(platform.python_version())
+workbook = xlwt.Workbook()
+worksheet = workbook.add_sheet('DAU_compiled')
+#worksheet.write(r,c,'label', style)
+worksheet.write(0,0,'DAU_Co')
+worksheet.write(0,1,'crop_Co')
+worksheet.write(0,2,'landuse')
+worksheet.write(0,3,'AW_ft')
+worksheet.write(0,4,'ETo')
+worksheet.write(0,5,'ETc')
+row = 0
+error_files = []
+for filename in os.listdir('/Users/SpencerCole/Documents/Hydroeconomics Research Resources/INFEWS-UNC/DAU Land and AW 2011-2015/DAUCoETcETawAW_DCIMIS2015.mtv'):
+	if filename == '2015_python_compiling_script_V1' or filename == '2015_python_compiling_script_V2' or filename == '2015_DAU_compiled.xls' or filename == '2015_DAU_compiled_V2.xls' \
+	or filename == 'test.py' or filename == '2015_python_compiling_script_V3':
+		continue
+	print(filename)
+	row += 1
+	DAU_Co = filename[5:10]
+	crop_Co = filename[11:14]
+	WY = filename[20:24]
+	try:
+		with open(filename, 'r', encoding = 'US-ASCII') as csvfile:
+			csvreader = csv.reader(csvfile, delimiter = ',')
+			data = list(csvreader)
+			landuse = data[3][2]
+			AW_mm = sum(float(data[i][10]) for i in range(3,15))
+			ETo_mm = sum(float(data[i][3]) for i in range(3,15))
+			ETc_mm = sum(float(data[i][4]) for i in range(3,15))
+			#Convert AW_mm to AW_ft
+			AW_ft = AW_mm*(1/304.8)
+			#Convert ETo_mm to ETo_ft and ETc_mm to ETc_ft
+			ETo_ft = ETo_mm*(1/304.8)
+			ETc_ft = ETc_mm*(1/304.8)
+			worksheet.write(row,0,DAU_Co)
+			worksheet.write(row,1,crop_Co)
+			worksheet.write(row,2,landuse)
+			worksheet.write(row,3,AW_ft)
+			worksheet.write(row,4,ETo_ft)
+			worksheet.write(row,5,ETc_ft)
+	except UnicodeDecodeError:
+		print(filename + ' encountered a decode error due to a non-ascii character.')
+		error_files.append(filename)
+	workbook.save('2015_DAU_compiled_V3.xls')
+print('Number of un-read files: ' + str(len(error_files)))
+print(error_files)
+	# if filename == 'DAUCo15658C020DCIMIS2011.mtv.csv':
+	# 	break
+#workbook.save('2011_DAU_compiled.xls')
