@@ -6,4 +6,6 @@ Data from the Department of Water Resources for monthly time steps of applied wa
 
 The files in this repository document the processes to consolidate and sort this data as well as the resultant values of interest for this project.
 
-"python_compiling_script_V0" and other variations of python_compiling_script are the Python scripts used to compile data by each year.
+DAU level data from DWR came in a format wherein the csv file name contained information regarding the DAU code, county code, year and crop for the information in the csv file. Within each csv file, the monthly applied water, landuse and evapotranspirations for the specified crop in the specified region and year were given in units of milimeters. 
+
+"python_compiling_script_V0" and other variations of python_compiling_script are the Python scripts used to compile data by each year. "python_compiling_script_V0" contains detailed annotations of the procedures taken to retrieve necessary data from the provided csv files.
