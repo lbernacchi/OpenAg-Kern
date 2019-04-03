@@ -1,7 +1,7 @@
 # OpenAg-Kern
 This is the repository for the OpenAg Model for Kern County
 
-OpenAg is an a framework for modeling agricultural production and water use using hydro-economic models. OpenAg employs deductive models on various programming languages to simulate croping decisions following the princples of economics of production theory. 
+OpenAg is an a framework for modeling agricultural production and water use using hydro-economic models. OpenAg employs deductive models on various programming languages to simulate croping decisions following the principles of economics of production theory. 
 
 OpenAg-Kern is an application for Kern County in California developed for as part of the NSF Funded Grant 1639268. INFEWS/T2: The sustainability-productivity tradeoff: Water supply vulnerabilities and adaptation opportunities in California?s coupled agricultural and energy sectors (http://infews.web.unc.edu/). 
 
